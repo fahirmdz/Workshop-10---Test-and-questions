@@ -18,6 +18,8 @@ public:
 	virtual ~MCMAPitanje();
 
 	virtual int getID()const;
+	virtual double brojOsvojenihBodova();
+	virtual bool odgovaranje(const char*, int);
 
  //Funkciju za dodavanje odgovora u listu koja treba da osigura da su najmanje 2 (od max) odgovora oznacena kao tacna. 
  // Dok se ne dodaju svi predvideni odgovori pitanje ne treba biti upotrebljivo ukoliko prethodni uslov nije ispunjen (ne prikazivati 

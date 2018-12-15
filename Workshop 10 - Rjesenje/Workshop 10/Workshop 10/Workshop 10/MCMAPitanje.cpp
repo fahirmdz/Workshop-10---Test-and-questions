@@ -26,6 +26,42 @@ MCMAPitanje::~MCMAPitanje() { delete[] _oznaceniOdgovoriStudenta;	_oznaceniOdgov
 
 int MCMAPitanje::getID()const { return _id; }
 
+double MCMAPitanje::brojOsvojenihBodova() {
+	int brOdg = _odgovori.GetTrenutno();
+	if (_oznaceniOdgovoriStudenta == nullptr || _brojOznacenihOdgovora <= 0 || brOdg <= 0)
+		return 0;
+	int brTacnih = 0;
+	for (int i = 0; i < brOdg; i++)
+		if (*_odgovori(i))
+			brTacnih++;
+	double bodovi = 0;
+	for (int i = 0; i < _brojOznacenihOdgovora; i++) {
+		if (*_odgovori(_oznaceniOdgovoriStudenta[i]-1))
+			bodovi += _bodovi / brTacnih;
+		else
+			bodovi -= ((_bodovi / brTacnih )*0.2);//oduzima bodove za netacan odgovor (20% od tacnog)
+	}
+	if (bodovi < 0)
+		bodovi = 0;
+	return bodovi;
+}
+bool MCMAPitanje::odgovaranje(const char* a = nullptr, int x=0) {
+	int brodg = _odgovori.GetTrenutno();
+	if (x <= 0 || x>brodg)
+		return false;
+	if (_brojOznacenihOdgovora >= brodg) {
+		cout << "Ne mozete unijeti vise od " << brodg << " odgovora..\n";
+		return false;
+	}
+	int* temp = new int[_brojOznacenihOdgovora + 1];
+	if (_brojOznacenihOdgovora > 0)
+		for (int i = 0; i < _brojOznacenihOdgovora; i++)
+			temp[i] = _oznaceniOdgovoriStudenta[i];
+	delete[] _oznaceniOdgovoriStudenta;
+	_oznaceniOdgovoriStudenta = temp;
+	_oznaceniOdgovoriStudenta[_brojOznacenihOdgovora++] = x;
+	return true;
+}
 
 //Funkciju za dodavanje odgovora u listu koja treba da osigura da su najmanje 2 (od max) odgovora oznacena kao tacna. 
 // Dok se ne dodaju svi predvideni odgovori pitanje ne treba biti upotrebljivo ukoliko prethodni uslov nije ispunjen (ne prikazivati 
@@ -59,13 +95,16 @@ char* MCMAPitanje::operator[](int index) {return AlocirajNizKaraktera((char*)_od
 	
 bool MCMAPitanje::operator()(int index) {return _odgovori[index];}
 void MCMAPitanje::postaviPitanje() {
-	Pitanje::print();
+	if (_tekst == nullptr)
+		return;
+	cout << "Pitanje: " << _tekst << endl;
 	int x = _odgovori.GetTrenutno();
 	if (x < 0)
 		return;
-	cout << "--PONUDJENI ODGOVORI--\n\n";
+	cout << "--PONUDJENI ODGOVORI--\n";
 	for (int i = 0; i < x; i++) 
 		cout << i + 1 << ". " << *_odgovori[i] << endl;
+	cout << endl;
 }
 bool MCMAPitanje::valid() {
 	int bro = _odgovori.GetTrenutno();
@@ -79,6 +118,7 @@ bool MCMAPitanje::valid() {
 		return false;
 	return true;
 }
+
 void MCMAPitanje::print() {
 	Pitanje::print();
 	int x = _odgovori.GetTrenutno();

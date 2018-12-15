@@ -37,9 +37,16 @@ public:
 		delete[] _oblast;
 		_oblast = nullptr;
 	}
-	virtual void dodavanjeOdgovora(const char*,bool) = 0;
-	//GET METHODS
+
+	//PURE VIRTUAL FUNCTIONS
+	virtual double brojOsvojenihBodova() = 0;
+	virtual void dodavanjeOdgovora(const char*,bool) = 0; //dodavanje mogucih odgovora na pitanje od strane profesora
+	virtual bool odgovaranje(const char*, int) = 0; //dodavanje odgovora studenta
+	virtual void postaviPitanje() = 0;
 	virtual int getID()const = 0;
+
+	//GET METHODS
+	
 	virtual char* getOblast()const { return _oblast; }
 	virtual char* getTekst()const { return _tekst; }
 	virtual double getBodovi()const { return _bodovi; }
@@ -91,6 +98,7 @@ public:
 			setBodovi(b);
 		}
 	}
+
 	virtual void setBodovi(double bodovi) {_bodovi = bodovi;}
 	virtual void print() {
 		if (_oblast == nullptr || _tekst == nullptr)

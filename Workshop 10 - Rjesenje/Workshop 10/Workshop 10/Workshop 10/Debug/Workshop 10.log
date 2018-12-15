@@ -1,13 +1,2 @@
-﻿  EsejskoPitanje.cpp
-  MCMAPitanje.cpp
-C:\Users\FahirMumdžić\Documents\GitHub\Workshop-10---Test and questions\Workshop 10 - Rjesenje\Workshop 10\Workshop 10\Workshop 10\MCMAPitanje.cpp(35): error C2664: 'List<char *,bool> &List<char *,bool>::operator ()(T1 &,T2 &)': cannot convert argument 1 from 'char *' to 'T1 &'
-          with
-          [
-              T1=char *,
-              T2=bool
-          ]
-          and
-          [
-              T1=char *
-          ]
-  Generating Code...
+﻿  Workshop 10.cpp
+  Workshop 10.vcxproj -> C:\Users\FahirMumdžić\Documents\GitHub\Workshop-10---Test and questions\Workshop 10 - Rjesenje\Workshop 10\Workshop 10\Debug\Workshop 10.exe

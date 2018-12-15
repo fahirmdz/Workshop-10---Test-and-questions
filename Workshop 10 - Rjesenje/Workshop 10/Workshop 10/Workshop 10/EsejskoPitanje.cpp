@@ -4,7 +4,7 @@
 
 	EsejskoPitanje::EsejskoPitanje() :_tacanOdgovor(nullptr), _odgovorStudenta(nullptr) {}
 
-	EsejskoPitanje::EsejskoPitanje(int id, const char* oblast, const char* tekst, double bodovi, const char* tacanOdg, const char* odgStudenta) :
+	EsejskoPitanje::EsejskoPitanje(int id, const char* tekst, const char* oblast, double bodovi, const char* tacanOdg, const char* odgStudenta) :
 		Pitanje(id, tekst, oblast, bodovi), _tacanOdgovor(AlocirajNizKaraktera(tacanOdg)),_odgovorStudenta(AlocirajNizKaraktera(odgStudenta)){}
 
 	EsejskoPitanje::EsejskoPitanje(const EsejskoPitanje& ep):Pitanje(ep._id,ep._tekst,ep._oblast,ep._bodovi),_tacanOdgovor(AlocirajNizKaraktera(ep._tacanOdgovor)),
@@ -20,8 +20,21 @@
 		delete[] _odgovorStudenta;
 		_tacanOdgovor = _odgovorStudenta = nullptr;
 	}
-	 void EsejskoPitanje::dodavanjeOdgovora(const char* odg,bool tacan=false) {
-		 _tacanOdgovor = AlocirajNizKaraktera(odg);
+
+	bool EsejskoPitanje::odgovaranje(const char* odg = nullptr, int x = 0) {
+		if (odg == nullptr)
+			return false;
+		_odgovorStudenta = AlocirajNizKaraktera(odg);
+		return true;
+	}
+	void EsejskoPitanje::dodavanjeOdgovora(const char* odg, bool tacan=false) {odgovaranje(odg);}
+	double EsejskoPitanje::brojOsvojenihBodova() {
+		if (_tacanOdgovor == nullptr || _odgovorStudenta == nullptr)
+			return 0;
+		if (strcmp(_tacanOdgovor, _odgovorStudenta) == 0)
+			return _bodovi;
+		else
+			return 0;
 	}
 	int EsejskoPitanje::getID()const {return _id;}
 
@@ -39,7 +52,11 @@
 	}
 
 	bool EsejskoPitanje::valid()const { return _odgovorStudenta != nullptr && _tacanOdgovor != nullptr && _tekst != nullptr && _oblast != nullptr; }
+	
 
+	void EsejskoPitanje::postaviPitanje() {
+		cout << "Pitanje: " << _tekst << endl << endl;
+	}
    void EsejskoPitanje::print()
 	{
 	   if (!valid())
