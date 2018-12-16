@@ -3,7 +3,7 @@
 
 //Pitanje koje može imati više tacnih odgovora. Student bira ponudene opcije. 
 class MCMAPitanje : public Pitanje {
-
+protected:
 	List<char*, bool> _odgovori; //ponudeni odgovori sa oznakama tacnih odgovora  
 	int* _oznaceniOdgovoriStudenta; //cuvaju se redni brojevi (npr. 1 - 3 - 5) ponudenih odgovora koje je odabrao student
 	int _brojOznacenihOdgovora;
@@ -17,10 +17,10 @@ public:
 	MCMAPitanje(MCMAPitanje&&);
 	virtual ~MCMAPitanje();
 
-	virtual int getID()const;
 	virtual double brojOsvojenihBodova();
 	virtual bool odgovaranje(const char*, int);
 
+	virtual int brojTacnih();
  //Funkciju za dodavanje odgovora u listu koja treba da osigura da su najmanje 2 (od max) odgovora oznacena kao tacna. 
  // Dok se ne dodaju svi predvideni odgovori pitanje ne treba biti upotrebljivo ukoliko prethodni uslov nije ispunjen (ne prikazivati 
  //pitanja na ispisu). 
@@ -32,12 +32,12 @@ public:
  //tacan odgovor. 
 	MCMAPitanje& operator-=(int);
 
- //Funkciju za promjenu odgovora na odredenom rednom broju. 
+ //Funkciju za promjenu teksta odgovora na odredenom rednom broju. 
 	virtual MCMAPitanje& operator()(int, const char*);
 
-	virtual char* operator[](int); //tekst pitanja iz liste
-	virtual bool operator()(int); //tacno/netacno pitanje iz liste
-	virtual void postaviPitanje();
+	virtual char* operator[](int); //tekst odgovora iz liste
+	virtual bool operator()(int); //tacan/netacan odgovor iz liste
+	virtual bool postaviPitanje();
 	bool valid();
 	virtual void print();
 };

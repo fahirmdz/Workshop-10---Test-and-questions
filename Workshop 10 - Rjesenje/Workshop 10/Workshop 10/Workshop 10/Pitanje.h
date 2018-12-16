@@ -42,11 +42,10 @@ public:
 	virtual double brojOsvojenihBodova() = 0;
 	virtual void dodavanjeOdgovora(const char*,bool) = 0; //dodavanje mogucih odgovora na pitanje od strane profesora
 	virtual bool odgovaranje(const char*, int) = 0; //dodavanje odgovora studenta
-	virtual void postaviPitanje() = 0;
-	virtual int getID()const = 0;
+	virtual bool postaviPitanje() = 0;
 
 	//GET METHODS
-	
+	virtual int getID()const {	return _id;}
 	virtual char* getOblast()const { return _oblast; }
 	virtual char* getTekst()const { return _tekst; }
 	virtual double getBodovi()const { return _bodovi; }

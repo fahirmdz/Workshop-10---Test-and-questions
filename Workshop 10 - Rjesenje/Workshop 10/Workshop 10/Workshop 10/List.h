@@ -28,13 +28,12 @@ public:
 		l._elementi2 = nullptr;
 	}
 	~List() {
-		delete[] _elementi1;
-		delete[] _elementi2;
 		_elementi1 = nullptr;
 		_elementi2 = nullptr;
 	}
+
 	
-	List& operator()(T1 t1, T2 t2) {
+	List& operator()(T1 t1, T2& t2) {
 		if (_trenutno >= _max) {
 			cout << "Lista puna..\n";
 			return *this;
@@ -54,10 +53,8 @@ public:
 		return *this;
 	}
 
-	T1* operator[](int index) {
-		if (index<0 || index>_trenutno - 1 || _trenutno <= 0)
-			return nullptr;
-		return &_elementi1[index];
+	T1& operator[](int index) {
+		return _elementi1[index];
 	}
 	T2* operator()(int index) {
 		if (index<0 || index>_trenutno - 1 || _trenutno <= 0)

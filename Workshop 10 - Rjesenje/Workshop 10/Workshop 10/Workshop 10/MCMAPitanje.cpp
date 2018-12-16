@@ -22,18 +22,36 @@ MCMAPitanje::MCMAPitanje(MCMAPitanje&& mp):_odgovori(mp._odgovori),_brojOznaceni
 	mp._oznaceniOdgovoriStudenta = nullptr;
 }
 
-MCMAPitanje::~MCMAPitanje() { delete[] _oznaceniOdgovoriStudenta;	_oznaceniOdgovoriStudenta = nullptr;}
+MCMAPitanje::~MCMAPitanje() {
+	
+	delete[] _oznaceniOdgovoriStudenta;	_oznaceniOdgovoriStudenta = nullptr;
+	int x = _odgovori.GetTrenutno();
+	
+	if (x > 0)
+		for (int i = 0; i < x; i++)
+		{
+			delete[] _odgovori[i];
+			_odgovori[i] = nullptr;
+		}
 
-int MCMAPitanje::getID()const { return _id; }
-
-double MCMAPitanje::brojOsvojenihBodova() {
+}
+int MCMAPitanje::brojTacnih() {
 	int brOdg = _odgovori.GetTrenutno();
-	if (_oznaceniOdgovoriStudenta == nullptr || _brojOznacenihOdgovora <= 0 || brOdg <= 0)
+	if (brOdg <= 0)
 		return 0;
 	int brTacnih = 0;
 	for (int i = 0; i < brOdg; i++)
 		if (*_odgovori(i))
 			brTacnih++;
+	return brTacnih;
+}
+
+double MCMAPitanje::brojOsvojenihBodova() {
+	int brOdg = _odgovori.GetTrenutno();
+	if (_oznaceniOdgovoriStudenta == nullptr || _brojOznacenihOdgovora <= 0 || brOdg <= 0)
+		return 0;
+	int brTacnih = brojTacnih();
+
 	double bodovi = 0;
 	for (int i = 0; i < _brojOznacenihOdgovora; i++) {
 		if (*_odgovori(_oznaceniOdgovoriStudenta[i]-1))
@@ -83,7 +101,7 @@ MCMAPitanje& MCMAPitanje::operator-=(int index) {
 
 //Funkciju za promjenu odgovora na odredenom rednom broju. 
 MCMAPitanje& MCMAPitanje::operator()(int index, const char* noviTekst) {
-	char* odg = *_odgovori[index];
+	char* odg = _odgovori[index];
 	if (odg != nullptr) {
 		delete[] odg;
 		odg = AlocirajNizKaraktera(noviTekst);
@@ -94,26 +112,25 @@ MCMAPitanje& MCMAPitanje::operator()(int index, const char* noviTekst) {
 char* MCMAPitanje::operator[](int index) {return AlocirajNizKaraktera((char*)_odgovori[index]);}
 	
 bool MCMAPitanje::operator()(int index) {return _odgovori[index];}
-void MCMAPitanje::postaviPitanje() {
-	if (_tekst == nullptr)
-		return;
+bool MCMAPitanje::postaviPitanje() {
+	if (_tekst == nullptr || !_valid)
+		return false;
 	cout << "Pitanje: " << _tekst << endl;
 	int x = _odgovori.GetTrenutno();
 	if (x < 0)
-		return;
-	cout << "--PONUDJENI ODGOVORI--\n";
+		return false;
+
+cout << "--PONUDJENI ODGOVORI--\n";
 	for (int i = 0; i < x; i++) 
-		cout << i + 1 << ". " << *_odgovori[i] << endl;
+		cout << i + 1 << ". " << _odgovori[i] << endl;
 	cout << endl;
+	return true;
 }
 bool MCMAPitanje::valid() {
 	int bro = _odgovori.GetTrenutno();
-	int brojac = 0;
+	int brojac = brojTacnih();
 	if (bro <= 0)
 		return false;
-	for (int i = 0; i < bro; i++)
-		if (_odgovori(i))
-			brojac++;
 	if (brojac < 2)
 		return false;
 	return true;
@@ -126,7 +143,7 @@ void MCMAPitanje::print() {
 		return;
 	cout << "--PONUDJENI ODGOVORI--\n\n";
 	for (int i = 0; i < x; i++) {
-		cout << i + 1 << ". " << *_odgovori[i] << "  -   ";
+		cout << i + 1 << ". " << _odgovori[i] << "  -   ";
 		if (*_odgovori(i))
 			cout << " TACNO\n";
 		else
@@ -137,6 +154,4 @@ void MCMAPitanje::print() {
 		for (int i = 0; i < _brojOznacenihOdgovora; i++)
 			cout << _oznaceniOdgovoriStudenta[i] << " , ";
 	cout << endl;
-	return;
-
 }

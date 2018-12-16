@@ -4,8 +4,8 @@
 
 	EsejskoPitanje::EsejskoPitanje() :_tacanOdgovor(nullptr), _odgovorStudenta(nullptr) {}
 
-	EsejskoPitanje::EsejskoPitanje(int id, const char* tekst, const char* oblast, double bodovi, const char* tacanOdg, const char* odgStudenta) :
-		Pitanje(id, tekst, oblast, bodovi), _tacanOdgovor(AlocirajNizKaraktera(tacanOdg)),_odgovorStudenta(AlocirajNizKaraktera(odgStudenta)){}
+	EsejskoPitanje::EsejskoPitanje(int id, const char* tekst, const char* oblast, double bodovi, const char* tacanOdg) :
+		Pitanje(id, tekst, oblast, bodovi), _tacanOdgovor(AlocirajNizKaraktera(tacanOdg)),_odgovorStudenta(nullptr){}
 
 	EsejskoPitanje::EsejskoPitanje(const EsejskoPitanje& ep):Pitanje(ep._id,ep._tekst,ep._oblast,ep._bodovi),_tacanOdgovor(AlocirajNizKaraktera(ep._tacanOdgovor)),
 	_odgovorStudenta(AlocirajNizKaraktera(ep._odgovorStudenta)){}
@@ -36,7 +36,6 @@
 		else
 			return 0;
 	}
-	int EsejskoPitanje::getID()const {return _id;}
 
 	char* EsejskoPitanje::getOdgStudenta()const { return _odgovorStudenta; }
 	char* EsejskoPitanje::getTacanodg()const { return _tacanOdgovor; }
@@ -54,8 +53,11 @@
 	bool EsejskoPitanje::valid()const { return _odgovorStudenta != nullptr && _tacanOdgovor != nullptr && _tekst != nullptr && _oblast != nullptr; }
 	
 
-	void EsejskoPitanje::postaviPitanje() {
+	bool EsejskoPitanje::postaviPitanje() {
+		if (_tekst == nullptr)
+			return false;
 		cout << "Pitanje: " << _tekst << endl << endl;
+		return true;
 	}
    void EsejskoPitanje::print()
 	{

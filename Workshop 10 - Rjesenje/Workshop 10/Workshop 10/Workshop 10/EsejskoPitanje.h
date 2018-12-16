@@ -7,7 +7,7 @@ class EsejskoPitanje : public Pitanje {
 	char* _odgovorStudenta;
 public:
 	EsejskoPitanje();
-	EsejskoPitanje(int, const char*, const char*, double, const char*, const char*);
+	EsejskoPitanje(int, const char*, const char*, double, const char*);
 	EsejskoPitanje(const EsejskoPitanje&);
 	EsejskoPitanje(EsejskoPitanje&&);
 	virtual ~EsejskoPitanje();
@@ -16,12 +16,11 @@ public:
 	virtual bool odgovaranje(const char*, int);
 	virtual void dodavanjeOdgovora(const char*, bool);
 	//GET METHODS
-	virtual int getID()const;
 	virtual char* getOdgStudenta()const;
 	virtual char* getTacanodg()const;
 
 
-	virtual void postaviPitanje();
+	virtual bool postaviPitanje();
 	//SET METHODS
 	virtual void setTacanOdg(const char*);
 	virtual void setOdgovorStudenta(const char*);
