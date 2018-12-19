@@ -27,7 +27,7 @@
 		_odgovorStudenta = AlocirajNizKaraktera(odg);
 		return true;
 	}
-	void EsejskoPitanje::dodavanjeOdgovora(const char* odg, bool tacan=false) {odgovaranje(odg);}
+
 	double EsejskoPitanje::brojOsvojenihBodova() {
 		if (_tacanOdgovor == nullptr || _odgovorStudenta == nullptr)
 			return 0;
@@ -50,14 +50,15 @@
 		_odgovorStudenta = AlocirajNizKaraktera(odgS);
 	}
 
-	bool EsejskoPitanje::valid()const { return _odgovorStudenta != nullptr && _tacanOdgovor != nullptr && _tekst != nullptr && _oblast != nullptr; }
+	bool EsejskoPitanje::valid()const { return  _tacanOdgovor != nullptr && _tekst != nullptr && _oblast != nullptr; }
 	
 
 	bool EsejskoPitanje::postaviPitanje() {
-		if (_tekst == nullptr)
+		if (!valid())
 			return false;
 		cout << "Pitanje: " << _tekst << endl << endl;
 		return true;
+
 	}
    void EsejskoPitanje::print()
 	{

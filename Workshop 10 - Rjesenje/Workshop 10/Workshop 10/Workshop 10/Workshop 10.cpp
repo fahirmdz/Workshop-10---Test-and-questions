@@ -37,6 +37,7 @@ void main() {
 	cout << "Vas odgovor: ";
 	cin.getline(odg, 150);
 	p2->odgovaranje(odg, 0);
+	cin.ignore();
 	cout << "Za drugo pitanje osvojili ste " << p2->brojOsvojenihBodova() << " bodova\n\n";
 	//==============================================================================
 
@@ -44,11 +45,10 @@ void main() {
 	
 	//=================MCSA Pitanje provjera funkcionalnosti=============================
 	
-		Pitanje* p3 = new MCSAPitanje(3, "Koji je glavni grad Belgije?", "Geografija", 20);
-		p3->dodavanjeOdgovora("Gent", false);
-		p3->dodavanjeOdgovora("Antwerpen", false);
-		p3->dodavanjeOdgovora("Brisel", true);
-	
+	Pitanje* p3 = new MCSAPitanje(3, "Koji je glavni grad Belgije?", "Geografija", 20);
+	p3->dodavanjeOdgovora("Gent", false);
+	p3->dodavanjeOdgovora("Antwerpen", false);
+	p3->dodavanjeOdgovora("Brisel", true);
 	
 	bool loopp;
 	int xx;
@@ -64,14 +64,27 @@ void main() {
 
 		} while (!loopp);
 	}
-	cout << "za trece pitanje osvojili ste " << p3->brojOsvojenihBodova() << " bodova\n";
+	cout << "Za trece pitanje osvojili ste " << p3->brojOsvojenihBodova() << " bodova\n";
 	p3->print();
 	cin.ignore();
+	////=================================================================================
+
+	//===================TESTIRANJE PITANJA TIPA POJAM===========================
+	Pitanje* p4 = new Pojam(false, 4, "Osobine", 30, "Obicno se kaze za covjeka koji puno radi i daje sve od sebe","Vrijedan");
+	p4->dodavanjeOdgovora("Svako to cijeni", true);
+	p4->dodavanjeOdgovora("Puno napora se ulaze", true);
+	p4->dodavanjeOdgovora("Vole mladi", false);
+	p4->postaviPitanje();
+	p4->odgovaranje(nullptr, 1);
+	p4->odgovaranje(nullptr, 2);
 	//=================================================================================
+
 	delete p2;
 	p2 = nullptr;
 	delete p1;
 	p1 = nullptr;
 	delete p3;
 	p3 = nullptr;
+	delete p4;
+	p4 = nullptr;
 }

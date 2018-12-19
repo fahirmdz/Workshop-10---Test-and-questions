@@ -8,13 +8,20 @@ public:
 	MCSAPitanje(int, const char*, const char*, double);
 	MCSAPitanje(const MCSAPitanje&);
 
+	virtual ~MCSAPitanje();
+
 	virtual double brojOsvojenihBodova();
-	virtual void dodavanjeOdgovora(const char*, bool);//dodavanje mogucih odgovora na pitanje od strane profesora
-	virtual bool odgovaranje(const char*, int); //dodavanje odgovora studenta
+
+	virtual void dodavanjeOdgovora(const char*, bool)final;//dodavanje mogucih odgovora na pitanje od strane profesora
+
+	virtual bool odgovaranje(const char*, int)override final; //dodavanje odgovora studenta
+
 	virtual bool postaviPitanje();
 
 	MCSAPitanje& operator-=(int); //uklanjanje odgovora
+
 	virtual bool valid();
+
 	virtual void print();
 
 //Preklopljene verzije funkcija za dodavanje i uklanjanje odgovora koje dozvoljavaju da samo jedan odgovor bude oznacen kao tacan.  

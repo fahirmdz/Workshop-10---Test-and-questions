@@ -2,9 +2,11 @@
 
 MCSAPitanje::MCSAPitanje() {}
 
-MCSAPitanje::MCSAPitanje(int id, const char* tekst, const char* oblast, double bodovi) :MCMAPitanje(id, tekst, oblast, bodovi) {}
+MCSAPitanje::MCSAPitanje(int id, const char* tekst, const char* oblast, double bodovi) :MCMAPitanje(id, tekst, oblast, bodovi),Pitanje(id,tekst,oblast,bodovi) {}
 
 MCSAPitanje::MCSAPitanje(const MCSAPitanje& x):MCMAPitanje(x) {}
+MCSAPitanje::~MCSAPitanje() {}
+
 double MCSAPitanje::brojOsvojenihBodova() {
 
 	if (_oznaceniOdgovoriStudenta == nullptr || _brojOznacenihOdgovora <= 0)
@@ -21,12 +23,11 @@ bool MCSAPitanje::valid() {	return brojTacnih() == 1;}
 void MCSAPitanje::dodavanjeOdgovora(const char* odg, bool tacan) {
 	if (odg == nullptr)
 		return;
-	if (tacan && brojTacnih() == 1) {
+	if (tacan && valid()) {
 		cout << "Ne mozete dodati vise od jednog tacnog odgovora..\n";
 		return;
 	}
 	_odgovori(AlocirajNizKaraktera(odg), tacan);
-	_valid = valid();
 }
 
 //dodavanje odgovora studenta
@@ -39,7 +40,7 @@ bool MCSAPitanje::odgovaranje(const char* odg=nullptr, int x=0) {
 	return true;
 }
 bool MCSAPitanje::postaviPitanje() {
-	if (_tekst == nullptr || !_valid)
+	if (_tekst == nullptr || !valid())
 		return false;
 	cout << "Pitanje: " << _tekst << endl;
 	int x = _odgovori.GetTrenutno();
@@ -55,7 +56,6 @@ bool MCSAPitanje::postaviPitanje() {
 //uklanjanje odgovora
 MCSAPitanje& MCSAPitanje::operator-=(int index) {
 	_odgovori -= index;
-	_valid = valid();
 	return *this;
 }
 
@@ -64,6 +64,11 @@ void MCSAPitanje::print() {
 	int x = _odgovori.GetTrenutno();
 	if (x < 0)
 		return;
+	cout << "VALIDNO: ";
+	if (valid())
+		cout << "DA\n";
+	else
+		cout << "NE\n";
 	cout << "--PONUDJENI ODGOVORI--\n\n";
 	for (int i = 0; i < x; i++) {
 		cout << i + 1 << ". " << _odgovori[i] << "  -   ";

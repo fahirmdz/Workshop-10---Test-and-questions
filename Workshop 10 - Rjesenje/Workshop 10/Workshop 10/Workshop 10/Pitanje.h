@@ -1,5 +1,5 @@
 #pragma once
-#include"cstring"
+#include<cstring>
 #include<iostream>
 using namespace std;
 
@@ -20,16 +20,33 @@ protected:
 		strcpy_s(temp, vel, sadrzaj);
 		return temp;
 	}
+
 public:
-	
 	Pitanje() :_id(0), _oblast(nullptr), _tekst(nullptr), _bodovi(0) {}
+
 	Pitanje(int id, const char* tekst, const char* oblast, double bodovi) : _id(id), _bodovi(bodovi), _oblast(AlocirajNizKarakteraa(oblast)),
 		_tekst(AlocirajNizKarakteraa(tekst)) {}
+
+	Pitanje(const Pitanje& p):_id(p._id),_bodovi(p._bodovi),_oblast(AlocirajNizKarakteraa(p._oblast)),_tekst(AlocirajNizKarakteraa(p._tekst)) {}
+
 	Pitanje(Pitanje&& p) :_id(p._id), _bodovi(p._bodovi) {
 		_oblast = p._oblast;
 		_tekst = p._tekst;
 		p._tekst = p._oblast = nullptr;
 	}
+
+	Pitanje& operator=(const Pitanje& p) {
+		if (&p == this)
+			return *this;
+		delete[] _tekst;
+		delete[] _oblast;
+		_tekst = AlocirajNizKarakteraa(p._tekst);
+		_oblast = AlocirajNizKarakteraa(p._oblast);
+		_bodovi = p._bodovi;
+		_id = p._id;
+		return *this;
+	}
+
 	virtual ~Pitanje() {
 		delete[] _tekst;
 		_tekst = nullptr;
@@ -40,27 +57,33 @@ public:
 
 	//PURE VIRTUAL FUNCTIONS
 	virtual double brojOsvojenihBodova() = 0;
-	virtual void dodavanjeOdgovora(const char*,bool) = 0; //dodavanje mogucih odgovora na pitanje od strane profesora
+
+	virtual void dodavanjeOdgovora(const char*, bool) {
+		return;
+	} //dodavanje mogucih odgovora na pitanje od strane profesora
+
 	virtual bool odgovaranje(const char*, int) = 0; //dodavanje odgovora studenta
+	
+	
 	virtual bool postaviPitanje() = 0;
 
 	//GET METHODS
-	virtual int getID()const {	return _id;}
-	virtual char* getOblast()const { return _oblast; }
-	virtual char* getTekst()const { return _tekst; }
-	virtual double getBodovi()const { return _bodovi; }
+	int getID()const {	return _id;}
+	char* getOblast()const { return _oblast; }
+	char* getTekst()const { return _tekst; }
+	double getBodovi()const { return _bodovi; }
 
 	//SET METHODS
-	virtual void setID(int id) {	_id = id;}
-	virtual void setOblast(const char* oblast) {
+	void setID(int id) {	_id = id;}
+	void setOblast(const char* oblast) {
 		delete[] _oblast;
 		_oblast = AlocirajNizKarakteraa(oblast);
 	}
-	virtual void setTekst(const char* tekst) {
+	void setTekst(const char* tekst) {
 		delete[] _tekst;
 		_tekst = AlocirajNizKarakteraa(tekst);
 	}
-	virtual void izmjenaPitanja() {
+	void izmjenaPitanja() {
 		int x;
 
 		do {
@@ -98,7 +121,7 @@ public:
 		}
 	}
 
-	virtual void setBodovi(double bodovi) {_bodovi = bodovi;}
+	void setBodovi(double bodovi) {_bodovi = bodovi;}
 	virtual void print() {
 		if (_oblast == nullptr || _tekst == nullptr)
 			return;

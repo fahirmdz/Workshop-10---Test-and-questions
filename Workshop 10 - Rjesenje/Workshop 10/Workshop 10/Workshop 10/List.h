@@ -32,7 +32,7 @@ public:
 		_elementi2 = nullptr;
 	}
 
-	
+
 	List& operator()(T1 t1, T2& t2) {
 		if (_trenutno >= _max) {
 			cout << "Lista puna..\n";

@@ -2,7 +2,8 @@
 
 #include"Pitanje.h"
 
-class EsejskoPitanje : public Pitanje {
+class EsejskoPitanje :virtual public Pitanje {
+protected:
 	char* _tacanOdgovor;
 	char* _odgovorStudenta;
 public:
@@ -12,18 +13,19 @@ public:
 	EsejskoPitanje(EsejskoPitanje&&);
 	virtual ~EsejskoPitanje();
 
+
 	virtual double brojOsvojenihBodova();
 	virtual bool odgovaranje(const char*, int);
-	virtual void dodavanjeOdgovora(const char*, bool);
+
 	//GET METHODS
-	virtual char* getOdgStudenta()const;
-	virtual char* getTacanodg()const;
+	char* getOdgStudenta()const;
+	char* getTacanodg()const;
 
 
 	virtual bool postaviPitanje();
 	//SET METHODS
-	virtual void setTacanOdg(const char*);
-	virtual void setOdgovorStudenta(const char*);
+	void setTacanOdg(const char*);
+	void setOdgovorStudenta(const char*);
 	bool valid()const;
 	
 	virtual void print();

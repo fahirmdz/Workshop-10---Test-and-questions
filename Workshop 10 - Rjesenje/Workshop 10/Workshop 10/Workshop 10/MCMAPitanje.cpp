@@ -1,12 +1,12 @@
 #include"pch.h"
 
 //Konstruktor i destruktor  
-MCMAPitanje::MCMAPitanje():_oznaceniOdgovoriStudenta(nullptr),_valid(false) {}
+MCMAPitanje::MCMAPitanje():_oznaceniOdgovoriStudenta(nullptr) {}
 
 MCMAPitanje::MCMAPitanje(int id, const char* tekst, const char* oblast, double bodovi):Pitanje(id,tekst,oblast,bodovi),
 _brojOznacenihOdgovora(0),_oznaceniOdgovoriStudenta(nullptr){}
 
-MCMAPitanje::MCMAPitanje(const MCMAPitanje& mp):Pitanje(mp._id,mp._tekst,mp._oblast,mp._bodovi),_valid(mp._valid),
+MCMAPitanje::MCMAPitanje(const MCMAPitanje& mp):Pitanje(mp._id,mp._tekst,mp._oblast,mp._bodovi),
 _brojOznacenihOdgovora(mp._brojOznacenihOdgovora),_odgovori(mp._odgovori){
 	if (_brojOznacenihOdgovora > 0)
 	{
@@ -17,7 +17,7 @@ _brojOznacenihOdgovora(mp._brojOznacenihOdgovora),_odgovori(mp._odgovori){
 	else _oznaceniOdgovoriStudenta = nullptr;
 }
 
-MCMAPitanje::MCMAPitanje(MCMAPitanje&& mp):_odgovori(mp._odgovori),_brojOznacenihOdgovora(mp._brojOznacenihOdgovora),_valid(mp._valid) {
+MCMAPitanje::MCMAPitanje(MCMAPitanje&& mp):_odgovori(mp._odgovori),_brojOznacenihOdgovora(mp._brojOznacenihOdgovora) {
 	_oznaceniOdgovoriStudenta = mp._oznaceniOdgovoriStudenta;
 	mp._oznaceniOdgovoriStudenta = nullptr;
 }
@@ -33,7 +33,6 @@ MCMAPitanje::~MCMAPitanje() {
 			delete[] _odgovori[i];
 			_odgovori[i] = nullptr;
 		}
-
 }
 int MCMAPitanje::brojTacnih() {
 	int brOdg = _odgovori.GetTrenutno();
@@ -63,6 +62,7 @@ double MCMAPitanje::brojOsvojenihBodova() {
 		bodovi = 0;
 	return bodovi;
 }
+
 bool MCMAPitanje::odgovaranje(const char* a = nullptr, int x=0) {
 	int brodg = _odgovori.GetTrenutno();
 	if (x <= 0 || x>brodg)
@@ -85,9 +85,28 @@ bool MCMAPitanje::odgovaranje(const char* a = nullptr, int x=0) {
 // Dok se ne dodaju svi predvideni odgovori pitanje ne treba biti upotrebljivo ukoliko prethodni uslov nije ispunjen (ne prikazivati 
 //pitanja na ispisu). 
 //Napomena: Podatke o odgovorima cuvati u zasebnoj memoriji i istu dealocirati unutar same klase. 
-void MCMAPitanje::dodavanjeOdgovora(const char* odg,bool tacan=false) {
+void MCMAPitanje::dodavanjeOdgovora(const char* odg, bool tacan = false) {
 	_odgovori(AlocirajNizKaraktera(odg), tacan);
-	_valid = valid();
+}
+
+MCMAPitanje& MCMAPitanje::operator=(MCMAPitanje& mp) {
+	if (&mp == this)
+		return *this;
+	Pitanje::operator=(mp);
+
+	delete[] _oznaceniOdgovoriStudenta;
+	_brojOznacenihOdgovora = mp._brojOznacenihOdgovora;
+	if (_brojOznacenihOdgovora > 0 && mp._oznaceniOdgovoriStudenta != nullptr) {
+		_oznaceniOdgovoriStudenta = new int[_brojOznacenihOdgovora];
+		for (int i = 0; i < _brojOznacenihOdgovora; i++)
+			_oznaceniOdgovoriStudenta[i] = mp._oznaceniOdgovoriStudenta[i];
+	}
+	int brodg = mp._odgovori.GetTrenutno();
+	if (brodg > 0) 
+		for (int i = 0; i < brodg; i++)
+			_odgovori((AlocirajNizKaraktera(mp._odgovori[i]), *mp._odgovori(i)));
+
+	return *this;
 }
 
 //Funkciju za uklanjanje odgovora na osnovu rednog broja u listi. Ukoliko se uklanja odgovor koji je oznacen kao tacan i 
@@ -95,7 +114,6 @@ void MCMAPitanje::dodavanjeOdgovora(const char* odg,bool tacan=false) {
 //tacan odgovor. 
 MCMAPitanje& MCMAPitanje::operator-=(int index) {
 	_odgovori -= index;
-	_valid = valid();
 	return *this;
 }
 
@@ -113,7 +131,7 @@ char* MCMAPitanje::operator[](int index) {return AlocirajNizKaraktera((char*)_od
 	
 bool MCMAPitanje::operator()(int index) {return _odgovori[index];}
 bool MCMAPitanje::postaviPitanje() {
-	if (_tekst == nullptr || !_valid)
+	if (_tekst == nullptr || !valid())
 		return false;
 	cout << "Pitanje: " << _tekst << endl;
 	int x = _odgovori.GetTrenutno();
