@@ -53,6 +53,11 @@ bool MCSAPitanje::postaviPitanje() {
 	return true;
 }
 
+MCSAPitanje& MCSAPitanje::operator=(MCSAPitanje& mp) {(MCMAPitanje&)operator=(mp);
+
+return *this;
+}
+
 //uklanjanje odgovora
 MCSAPitanje& MCSAPitanje::operator-=(int index) {
 	_odgovori -= index;

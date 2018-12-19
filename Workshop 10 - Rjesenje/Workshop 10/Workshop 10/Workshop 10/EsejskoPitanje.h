@@ -21,6 +21,7 @@ public:
 	char* getOdgStudenta()const;
 	char* getTacanodg()const;
 
+	EsejskoPitanje& operator=(EsejskoPitanje&);
 
 	virtual bool postaviPitanje();
 	//SET METHODS

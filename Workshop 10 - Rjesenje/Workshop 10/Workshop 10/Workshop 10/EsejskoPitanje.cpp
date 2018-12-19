@@ -20,6 +20,17 @@
 		delete[] _odgovorStudenta;
 		_tacanOdgovor = _odgovorStudenta = nullptr;
 	}
+	EsejskoPitanje& EsejskoPitanje::operator=(EsejskoPitanje& ep) {
+		if (this == &ep)
+			return *this;
+
+		(Pitanje&)operator=(ep);
+		delete[] _tacanOdgovor;
+		delete[] _odgovorStudenta;
+		_tacanOdgovor = AlocirajNizKaraktera(ep._tacanOdgovor);
+		_odgovorStudenta = AlocirajNizKaraktera(ep._odgovorStudenta);
+		return *this;
+	}
 
 	bool EsejskoPitanje::odgovaranje(const char* odg = nullptr, int x = 0) {
 		if (odg == nullptr)

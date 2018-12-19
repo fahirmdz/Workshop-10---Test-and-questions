@@ -18,6 +18,7 @@ public:
 
 	virtual bool postaviPitanje();
 
+	MCSAPitanje& operator=(MCSAPitanje&);
 	MCSAPitanje& operator-=(int); //uklanjanje odgovora
 
 	virtual bool valid();

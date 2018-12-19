@@ -92,7 +92,7 @@ void MCMAPitanje::dodavanjeOdgovora(const char* odg, bool tacan = false) {
 MCMAPitanje& MCMAPitanje::operator=(MCMAPitanje& mp) {
 	if (&mp == this)
 		return *this;
-	Pitanje::operator=(mp);
+	(Pitanje&)operator=(mp);
 
 	delete[] _oznaceniOdgovoriStudenta;
 	_brojOznacenihOdgovora = mp._brojOznacenihOdgovora;
