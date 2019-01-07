@@ -95,7 +95,8 @@ int main() {
 
 	cout << "Student osvojio " << p4->brojOsvojenihBodova() << " bodova\n\n";
 	//=================================================================================
-
+        cin.get();
+	system("cls");
 
 	//=============TESTIRANJE KLASE TEST================================================
 	cout << "\n=============TEST KLASE 'TEST'================\n\n";
